@@ -3,10 +3,10 @@ from time import sleep
 
 in11 = 4
 in12 = 18
-ena = 
+ena = 23
 in21 = 27
 in22 = 17
-enb = 
+enb = 24
 temp1=1
 
 GPIO.setwarnings(False)
@@ -23,9 +23,10 @@ GPIO.output(in11,GPIO.LOW)
 GPIO.output(in12,GPIO.LOW)
 GPIO.output(in21,GPIO.LOW)
 GPIO.output(in22,GPIO.LOW)
-#p=GPIO.PWM(en,1000)
-
-p.start(25)
+p1=GPIO.PWM(ena,1000)
+p2=GPIO.PWM(enb,1000)
+p1.start(25)
+p2.start(25)
 print("\n")
 print("Padrão da velocidade e direção é devagar e frente")
 print("e-start q-stop w-frente s-atras v-devagar f-medio r-rapido t-sair")
@@ -121,17 +122,20 @@ while(1):
     
     elif x=='v':
         print("devagar")
-        p.ChangeDutyCycle(25)
+        p1.ChangeDutyCycle(25)
+        p2.ChangeDutyCycle(25)
         x='z'
 
     elif x=='f':
         print("medio")
-        p.ChangeDutyCycle(50)
+        p1.ChangeDutyCycle(50)
+        p2.ChangeDutyCycle(50)
         x='z'
 
     elif x=='r':
         print("rapido")
-        p.ChangeDutyCycle(75)
+        p1.ChangeDutyCycle(75)
+        p2.ChangeDutyCycle(75)
         x='z'
     
     elif x=='t':
