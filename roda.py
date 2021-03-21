@@ -1,50 +1,144 @@
-import RPi.GPIO as GPIO
-import time
+import RPi.GPIO as GPIO          
+from time import sleep
+
+in11 = 4
+in12 = 18
+ena = 
+in21 = 27
+in22 = 17
+enb = 
+temp1=1
 
 GPIO.setwarnings(False)
 GPIO.cleanup()
 GPIO.setmode(GPIO.BCM)
+GPIO.setup(in11,GPIO.OUT)
+GPIO.setup(in12,GPIO.OUT)
+GPIO.setup(ena,GPIO.OUT)
+GPIO.setup(in21,GPIO.OUT)
+GPIO.setup(in22,GPIO.OUT)
+GPIO.setup(enb,GPIO.OUT)
 
-RODA11 = 4
-RODA12 = 18
-RODA21 = 27
-RODA22 = 17
+GPIO.output(in11,GPIO.LOW)
+GPIO.output(in12,GPIO.LOW)
+GPIO.output(in21,GPIO.LOW)
+GPIO.output(in22,GPIO.LOW)
+#p=GPIO.PWM(en,1000)
 
-GPIO.setup(RODA11, GPIO.OUT)
-GPIO.setup(RODA12, GPIO.OUT)
-GPIO.setup(RODA21, GPIO.OUT)
-GPIO.setup(RODA22, GPIO.OUT)
+p.start(25)
+print("\n")
+print("Padrão da velocidade e direção é devagar e frente")
+print("e-start q-stop w-frente s-atras v-devagar f-medio r-rapido t-sair")
+print("\n")    
 
-def foward():
-    GPIO.output(RODA11, GPIO.HIGH)
-    GPIO.output(RODA12, GPIO.LOW)
-    GPIO.output(RODA21, GPIO.HIGH)
-    GPIO.output(RODA22, GPIO.LOW)
+while(1):
 
-def backward():
-    GPIO.output(RODA11, GPIO.LOW)
-    GPIO.output(RODA12, GPIO.HIGH)
-    GPIO.output(RODA21, GPIO.LOW)
-    GPIO.output(RODA22, GPIO.HIGH)
+    x=raw_input()
+    
+    if x=='e':
+        print("rodando")
+        if(temp1==0):
+            GPIO.output(in11,GPIO.LOW)
+            GPIO.output(in12,GPIO.LOW)
+            GPIO.output(in21,GPIO.LOW)
+            GPIO.output(in22,GPIO.LOW)
+            print("parado")
+            x='z'
+        elif(temp1==1):
+            GPIO.output(in11,GPIO.HIGH)
+            GPIO.output(in12,GPIO.LOW)
+            GPIO.output(in21,GPIO.HIGH)
+            GPIO.output(in22,GPIO.LOW)
+            print("frente")
+            x='z'
+        elif(temp1==2):
+            GPIO.output(in11,GPIO.LOW)
+            GPIO.output(in12,GPIO.HIGH)
+            GPIO.output(in21,GPIO.LOW)
+            GPIO.output(in22,GPIO.HIGH)
+            print("atras")
+            x='z'
+        elif(temp1==3):
+            GPIO.output(in11,GPIO.LOW)
+            GPIO.output(in12,GPIO.HIGH)
+            GPIO.output(in21,GPIO.HIGH)
+            GPIO.output(in22,GPIO.LOW)
+            print("esquerda")
+            x='z'
+        elif(temp1==4):
+            GPIO.output(in11,GPIO.HIGH)
+            GPIO.output(in12,GPIO.LOW)
+            GPIO.output(in21,GPIO.LOW)
+            GPIO.output(in22,GPIO.HIGH)
+            print("direita")
+            x='z'
+        
 
-def left():
-    GPIO.output(RODA11, GPIO.LOW)
-    GPIO.output(RODA12, GPIO.HIGH)
-    GPIO.output(RODA21, GPIO.HIGH)
-    GPIO.output(RODA22, GPIO.LOW)
+    elif x=='e':
+        print("parou")
+        GPIO.output(in11,GPIO.LOW)
+        GPIO.output(in12,GPIO.LOW)
+        GPIO.output(in21,GPIO.LOW)
+        GPIO.output(in22,GPIO.LOW)
+        temp1=0
+        x='z'
 
-def right():
-    GPIO.output(RODA11, GPIO.HIGH)
-    GPIO.output(RODA12, GPIO.LOW)
-    GPIO.output(RODA21, GPIO.LOW)
-    GPIO.output(RODA22, GPIO.HIGH)
+    elif x=='w':
+        print("frente")
+        GPIO.output(in11,GPIO.HIGH)
+        GPIO.output(in12,GPIO.LOW)
+        GPIO.output(in21,GPIO.HIGH)
+        GPIO.output(in22,GPIO.LOW)
+        temp1=1
+        x='z'
 
-while True:
-    foward()
-    time.sleep(10)
-    backward()
-    time.sleep(10)
-    left()
-    time.sleep(10)
-    right()
-    time.sleep(10)
+    elif x=='s':
+        print("atras")
+        GPIO.output(in11,GPIO.LOW)
+        GPIO.output(in12,GPIO.HIGH)
+        GPIO.output(in21,GPIO.LOW)
+        GPIO.output(in22,GPIO.HIGH)
+        temp1=2
+        x='z'
+    
+    elif x=='a':
+        print("esquerda")
+        GPIO.output(in11,GPIO.LOW)
+        GPIO.output(in12,GPIO.HIGH)
+        GPIO.output(in21,GPIO.HIGH)
+        GPIO.output(in22,GPIO.LOW)
+        temp1=3
+        x='z'
+    
+    elif x=='s':
+        print("direita")
+        GPIO.output(in11,GPIO.HIGH)
+        GPIO.output(in12,GPIO.LOW)
+        GPIO.output(in21,GPIO.LOW)
+        GPIO.output(in22,GPIO.HIGH)
+        temp1=4
+        x='z'
+    
+    elif x=='v':
+        print("devagar")
+        p.ChangeDutyCycle(25)
+        x='z'
+
+    elif x=='f':
+        print("medio")
+        p.ChangeDutyCycle(50)
+        x='z'
+
+    elif x=='r':
+        print("rapido")
+        p.ChangeDutyCycle(75)
+        x='z'
+    
+    elif x=='t':
+        GPIO.cleanup()
+        print("GPIO Clean up")
+        break
+    
+    else:
+        print("erro")
+
