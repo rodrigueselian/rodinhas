@@ -1,5 +1,6 @@
 import RPi.GPIO as GPIO          
 from time import sleep
+import time
 
 in11 = 4
 in12 = 18
@@ -45,14 +46,22 @@ def get_distance():
     distance = sig_time / 0.000058
     return distance
 
+def move():
+    GPIO.output(in11,GPIO.HIGH)
+    GPIO.output(in12,GPIO.LOW)
+    GPIO.output(in21,GPIO.HIGH)
+    GPIO.output(in22,GPIO.LOW)
+
+def left():
+    GPIO.output(in11,GPIO.LOW)
+    GPIO.output(in12,GPIO.HIGH)
+    GPIO.output(in21,GPIO.HIGH)
+    GPIO.output(in22,GPIO.LOW)
+
 while(1):
-    if get_distance() > 4: ##frente
-        GPIO.output(in11,GPIO.HIGH)
-        GPIO.output(in12,GPIO.LOW)
-        GPIO.output(in21,GPIO.HIGH)
-        GPIO.output(in22,GPIO.LOW)
-    else: ##esquerda
-        GPIO.output(in11,GPIO.LOW)
-        GPIO.output(in12,GPIO.HIGH)
-        GPIO.output(in21,GPIO.HIGH)
-        GPIO.output(in22,GPIO.LOW)
+    distance = get_distance()
+    time.sleep(0.1)
+    if distance > 10:
+        move()
+    else:
+        left()
